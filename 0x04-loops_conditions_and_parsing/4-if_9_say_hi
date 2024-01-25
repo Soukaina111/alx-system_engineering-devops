@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# displays Best School 10 times with condition.
+
+CORT=0
+while [ $CORT -lt 11 ]
+do
+    if [ $CORT = 9 ]
+    then
+        echo "Hi"
+    else
+        echo "Best School"
+    fi
+    let CORT+=1
+done
+
