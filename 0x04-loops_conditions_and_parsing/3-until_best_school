@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# this function displays Best School 10 times using until .
+
+CORT=10
+until [ $CORT -lt 1 ]
+do
+    echo "Best School"
+    let CORT-=1
+done
