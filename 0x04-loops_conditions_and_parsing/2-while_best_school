@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #this function displays Best School 10 times using while loop.
 
-cpt=0
-while [ $cpt  -lt 10 ]
+CORT=0
+while [ $CORT -lt 10 ]
 do
     echo "Best School"
-    let cpt = cpt+1
+    let CORT=CORT+1
 done
