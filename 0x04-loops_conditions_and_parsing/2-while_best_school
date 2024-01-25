@@ -2,7 +2,7 @@
 #this function displays Best School 10 times using while loop.
 
 cpt=0
-while [ cpt <10 ]
+while [ $cpt <10 ]
 do
     echo "Best School"
     let cpt=cpt+1
