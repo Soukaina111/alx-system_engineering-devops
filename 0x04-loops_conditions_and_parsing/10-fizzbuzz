@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# displays Best School 10 times.
+
+TER=1
+while [ $TER -lt 101 ]
+do
+    if [ $((TER%15)) = 0 ]
+    then
+        echo "FizzBuzz"
+    elif [ $((TER%3)) = 0 ]
+    then
+        echo "Fizz"
+    elif [ $((TER%5)) = 0 ]
+    then
+        echo "Buzz"
+    else
+        echo "$TER"
+    fi
+    let TER+=1
+done
