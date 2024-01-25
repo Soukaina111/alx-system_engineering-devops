@@ -12,4 +12,3 @@ do
     fi
     let CORT+=1
 done
-
