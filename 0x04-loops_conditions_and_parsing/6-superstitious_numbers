@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# this function displays numbers from 1 to 20.
+
+TER=1
+while [ $TER -lt 21 ]
+do
+    case $TER in
+
+        4)
+	    echo $TER
+	    echo "bad luck from China"
+	    ;;
+	
+	9)
+	    echo $TER
+	    echo "bad luck from Japan"
+	    ;;
+	
+	17)
+	    echo $TER
+	    echo "bad luck from Italy"
+	    ;;
+
+	*)
+	    echo $TER
+	    ;;
+    esac
+
+    let TER+=1
+done
