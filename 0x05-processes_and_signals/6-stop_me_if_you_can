@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This script answers the stop me if u can task
+pkill -f beyond

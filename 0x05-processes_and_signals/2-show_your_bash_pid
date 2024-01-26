@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script extends task1  and shows line containing the bash word, to get the PID more easily
+
+
+./1-list_your_processes | grep "bash"

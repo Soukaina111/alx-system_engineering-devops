@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# This script don't stop a process using command kill
+kill "$(ps -x | pgrep -f beyond)"
