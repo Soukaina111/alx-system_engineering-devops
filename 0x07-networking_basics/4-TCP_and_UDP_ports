@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Displays TCP and UDP ports listening and PIDs associated to their sockets
+netstat -lp
