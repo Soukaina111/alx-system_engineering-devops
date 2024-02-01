@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# allowing Port listening on localhost usingtelnet and netcat command 
+nc -lk localhost 98
