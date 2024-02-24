@@ -1,5 +1,7 @@
 ![Distributed](https://i.imgur.com/wSsNvGp.png)
+
 Description
+
 This is a distributed web infrastructure that atttempts to reduce the traffic to the primary server by distributing the load of the traffic using load balancer and two servers.
 
 Specifics About This Infrastructure
