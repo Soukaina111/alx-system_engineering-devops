@@ -1,3 +1,4 @@
+![LAMP](https://i.imgur.com/p2uyTqY.png)
 Description
 
 The current fils represents a simple web infrastructure that hosts a website with the domain name foobar.com. this infrastructure is the basic one without any  firewalls or SSL certificates for protecting the server's network. All the  components of the LAMP stack hasto share the resources provided by the server APACHE.
