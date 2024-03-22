@@ -2,6 +2,5 @@
 
 exec { 'kill_process':
 	command => 'pkill killmenow',
-	provider => 'shell',
 	onlyif  => 'pgrep killmenow',
 }
