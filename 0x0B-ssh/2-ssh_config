@@ -1,0 +1,6 @@
+# This is a config file to allow conecting without asking for password
+# with specified private key
+
+Host *
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
