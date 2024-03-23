@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script generates a RSA ky pair with a given passphrase
+
+p_key_name="school"
+bits=4096
+passphrase="betty"
+
+ssh-keygen -t rsa -b $bits -P "$passphrase" -f $p_key_name
