@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 # This script Install Nginx web server
 
-# Update packages
 apt-get update
-# Install the web server while answering yes to all the prompts
 apt-get install -y nginx
-# Send Hello World Content to the index page
-echo "Hello World" > /var/www/html/index.html
-# Start the server
+cat >/etc/nginx/sites-available/default <<EOL
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm;
+    server_name _;
+    location / {
+        try_files \$uri \$uri/ =404;
+        echo "Hello World!";
+    }
+}
+EOL
 service nginx start
