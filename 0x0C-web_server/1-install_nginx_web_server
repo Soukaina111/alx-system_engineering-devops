@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script Install Nginx web server
+
+# Update packages
+apt-get update
+# Install the web server while answering yes to all the prompts
+apt-get install -y nginx
+# Send Hello World Content to the index page
+echo "Hello World" > /var/www/html/index.html
+# Start the server
+service nginx start
