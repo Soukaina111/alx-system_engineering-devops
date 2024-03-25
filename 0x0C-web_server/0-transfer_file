@@ -6,11 +6,11 @@ if [ $# -lt 3 ] ; then
 echo  "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
 
 else
-	path_to-file_to_be_transferred=$1
+	path_to_file_to_be_transferred=$1
 	IP_server=$2
 	username=$3
 	path_to_ssh_privatekey=$4
 
-	scp -o StrictHostKeyChecking=no -i "$path_to-file_to_be_transferred"
+	scp -o StrictHostKeyChecking=no -i "$path_to_file_to_be_transferred"
 	"$path_to_ssh_privatekey" "$username@$IP_server:~/"  
 fi
