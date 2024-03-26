@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
-# This script add the 404 page to the services offered by nginx
+# This script add the 404 page to the service provided by nginx
+
+R1="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+R2="\n\\terror_page 404 /404.html;\n\tlocation = /var/www/html/404.html {\n\t\tinternal;\n\t}"
+R3="#error_page 404 /404.html;"
+
 
 sudo apt-get update
 sudo apt-get install -y nginx
-echo "Hello World!" > /var/www/html/index.html
-red ="listen 80 default_server;\n\trewrite ^\/redirect_me https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;"
-sudo sed -i "s/listen 80 default_server;/$red/" /etc/nginx/sites-available/default
-echo "Ceci n'est pas une page\n" > /var/www/html/404.html
-red ="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
-sudo sed -i "s/listen 80 default_server;/$red/" /etc/nginx/sites-available/default
-
+sudo chown -R ubuntu /var/www
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+sudo sed -i "30i $R1" /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+sudo sed -i "47i\ $R3$R2" /etc/nginx/sites-available/default
 sudo service nginx restart
+sudo service nginx reload
