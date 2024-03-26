@@ -2,11 +2,9 @@
 # This script Install Nginx web server
 
 # This script updates and upgrade with a yes to all prompt
-sudo apt-get update -y
+sudo apt-get update -y -qq
 sudo apt-get install nginx -y
 sudo service nginx start
 sudo ufw allow 'Nginx HTTP'
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
 echo -e "Hello World!" | dd status=none of=/var/www/html/index.html
 sudo service nginx restart
