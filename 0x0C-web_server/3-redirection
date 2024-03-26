@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# This script set up a new Ubuntu local machine with redirection feature
+# This script set up a new local machine with redirection feature
 
 red="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
 
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo chown -R ubuntu /var/www
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo "Hello World!" > /var/www/html/index.html
 sudo sed -i "30i $red" /etc/nginx/sites-available/default
 sudo service nginx restart
