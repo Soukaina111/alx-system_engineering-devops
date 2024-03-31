@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# This script apply Redundancy for  web01 and Web02 to handle traffic and be more efficient
+
+# Install Nginx if not already installed
+if ! command -v nginx &> /dev/null; then
+    apt-get update -y -qq
+    apt-get install -y nginx -qq
+fi
+
+# Set ownership and permissions for website directories
+chown -R $USER:$USER /var/www/html
+chmod -R 755 /var/www/html
+
+# Create or update localhost page
+cat <<EOF > /var/www/html/index.html
+Hello World!
+EOF
+
+# Create error_404.html file
+cat <<EOF > /var/www/html/error_404.html
+Ceci n'est pas une page
+EOF
+
+# This line deletes existing default server block configuration
+rm /etc/nginx/sites-enabled/default
+
+# This block create a new server block configuration
+cat <<EOF > /etc/nginx/sites-available/myserver
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    add_header X-Served-By \$hostname;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location = /error_404.html {
+        internal;
+    }
+
+    location ~ /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
+}
+EOF
+
+# This line activate the new server block configuration
+ln -s /etc/nginx/sites-available/myserver /etc/nginx/sites-enabled/
+
+# Restart Nginx service
+systemctl restart nginx
