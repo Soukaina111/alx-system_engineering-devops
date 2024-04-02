@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# This script is reconfugring Nginex to listen to port 8à in case it isn't
+
+# Update package lists and instal nginx if it isn't already
+apt-get update
+
+if ! command -v nginx &> /dev/null
+then
+    echo "Nginx is not installed. Installing now..."
+    apt-get install -y nginx
+fi
+
+# This line Ensure Nginx is running
+echo "Nginx is starting..."
+nginx
+
+# This block of code  check Nginx configuration for  syntax errors
+echo "Looking for nginx configuration syntax or test errors..."
+if nginx -t | grep -q "configuration file /etc/nginx/nginx.conf test is successful"; then
+    echo "Nginx configuration is valid."
+else
+    echo "Nginx configuration has errors. Please fix them and try again."
+    exit 1
+fi
+
+echo "let's check which  port nginx is listening to 80..."
+if netstat -tuln | grep -q ":80 "; then
+    echo "Nginx is actually listening on port 80."
+else
+    echo "Nginx is not listening on port 80. Updating configuration..."
+    sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+    nginx -s reload
+    echo "Nginx configuration updated. Restarting Nginx..."
+    nginx -s reload
+fi
+
+echo "Congrats, Nginx is now configured to listen on port 80."
+
