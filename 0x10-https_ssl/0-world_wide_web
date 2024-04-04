@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# This script displays domains and their subdomains respectively
+
+print_domain_subdomain() {
+    local domain="$1"
+    local subdomain="$2"
+
+    local dig_output
+    dig_output=$(dig "$domain")
+
+    local answer_section
+    answer_section=$(grep -A1 'ANSWER SECTION:' <<< "$dig_output")
+
+    local modified_output
+    modified_output=$(sed -r "s/$domain./$subdomain/g" <<< "$answer_section")
+
+    local record_info
+    record_info=$(awk -F" " 'NR==2 {print "The subdomain " $1 " is a " $4 " record and points to " $5}' <<< "$modified_output")
+
+    echo "$record_info"
+}
+
+if [ "$#" -eq 2 ]; then
+    print_domain_subdomain "$2.$1" "$2"
+else
+    print_domain_subdomain "www.$1" "www"
+    print_domain_subdomain "lb-01.$1" "lb-01"
+    print_domain_subdomain "web-01.$1" "web-01"
+    print_domain_subdomain "web-02.$1" "web-02"
+fi
