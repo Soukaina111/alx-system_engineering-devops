@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
 # This script is reconfugring Nginex to listen to port 8à in case it isn't
 
-# Update package lists and instal nginx if it isn't already
 apt-get update
 
 if ! command -v nginx &> /dev/null
@@ -10,12 +8,8 @@ then
     echo "Nginx is not installed. Installing now..."
     apt-get install -y nginx
 fi
-
-# This line Ensure Nginx is running
 echo "Nginx is starting..."
 nginx
-
-# This block of code  check Nginx configuration for  syntax errors
 echo "Looking for nginx configuration syntax or test errors..."
 if nginx -t | grep -q "configuration file /etc/nginx/nginx.conf test is successful"; then
     echo "Nginx configuration is valid."
