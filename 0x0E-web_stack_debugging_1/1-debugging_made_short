@@ -5,7 +5,7 @@
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Start the Nginx service
-systemctl start nginx
+service start nginx
 
 # Stop the Nginx service using pkill
 pkill nginx
