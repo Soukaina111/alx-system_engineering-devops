@@ -41,3 +41,4 @@ else
     echo "Nginx configuration updated. Restarting Nginx..."
     sudo nginx -s reload
 fi
+
