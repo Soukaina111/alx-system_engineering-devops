@@ -1,28 +1,43 @@
 #!/usr/bin/env bash
-# This script is reconfugring Nginex to listen to port 8à in case it isn't
-apt-get update
-if ! command -v nginx &> /dev/null
-then
-    echo "Nginx is not installed. Installing now..."
-    apt-get install -y nginx
+# This script is reconfiguring Nginx to listen to port 80 in case it isn't
+
+# Check if the user has sudo privileges
+if ! sudo -n true 2>/dev/null; then
+    echo "This script requires sudo privileges."
+    exit 1
 fi
+
+# Update package lists
+sudo apt-get update
+
+# Check if Nginx is installed
+if ! command -v nginx &> /dev/null; then
+    echo "Nginx is not installed. Installing now..."
+    sudo apt-get install -y nginx
+fi
+
+# Start Nginx
 echo "Nginx is starting..."
-nginx
-echo "Looking for nginx configuration syntax or test errors..."
-if nginx -t | grep -q "configuration file /etc/nginx/nginx.conf test is successful"; then
+sudo nginx
+
+# Check Nginx configuration
+echo "Checking Nginx configuration for errors..."
+if sudo nginx -t | grep -q "configuration file /etc/nginx/nginx.conf test is successful"; then
     echo "Nginx configuration is valid."
 else
     echo "Nginx configuration has errors. Please fix them and try again."
     exit 1
 fi
-echo "let's check which  port nginx is listening to 80..."
-if netstat -tuln | grep -q ":80 "; then
-    echo "Nginx is actually listening on port 80."
+
+# Check if Nginx is listening on port 80
+echo "Checking if Nginx is listening on port 80..."
+if sudo netstat -tuln | grep -q ":80 "; then
+    echo "Nginx is listening on port 80."
 else
     echo "Nginx is not listening on port 80. Updating configuration..."
-    sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
-    nginx -s reload
+    # Use a more robust method to modify the configuration
+    sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+    sudo nginx -s reload
     echo "Nginx configuration updated. Restarting Nginx..."
-    nginx -s reload
+    sudo nginx -s reload
 fi
-echo "Congrats, Nginx is now configured to listen on port 80."
