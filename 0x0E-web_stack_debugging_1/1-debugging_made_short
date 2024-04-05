@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-# This script is reconfugring Nginex to listen to port 8à in case it isn't
-
-# Create a symbolic link to enable the default site configuration
+# This script is reconfugring Nginex to listen to port 80 in case it isn't
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-# Start the Nginx service
-service start nginx
-
-# Stop the Nginx service using pkill
-pkill nginx
-
+service nginx start
+kill "$(pgrep 'nginx' | head -1)"
