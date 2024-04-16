@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # This script is to prevent users to be root user
 
-# Step 1: Create nginx user if it doesn't exist
-if ! id -u nginx > /dev/null 2>&1; then
-    sudo adduser --system --no-create-home --disabled-login --disabled-password --group nginx
-fi
 chmod ugo+wrx /etc/apache2/ports.conf /etc/nginx/nginx.conf
 
+# Comment out Apache's port configuration
+sed -i 's/Listen 8080/#Listen 8080/g' /etc/apache2/ports.conf
 
-# Step 2: Configure nginx to listen on port 8080
-sudo sed -i 's/listen\s*80;/listen 8080;/g' /etc/nginx/nginx.conf
-
-# Step 3: Allow nginx to listen on all active IPs
-sudo sed -i '/listen\s*8080;/a\        listen \*:8080;' /etc/nginx/nginx.conf
+# Change the user in nginx.conf
 sed -i 's/#user www-data;/user nginx;/g' /etc/nginx/nginx.conf
+
+# Change the default port in the default site configuration
+sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+
+# Restart Apache to release port 8080
 pkill -1 apache2
-# Step 4: Restart nginx service
-sudo service nginx restart
+
+# Restart Nginx service
+sudo -u nginx service nginx restart
