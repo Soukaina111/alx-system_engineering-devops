@@ -37,6 +37,7 @@ def fetch_employee_data(employee_id):
 
     return todos, employee
 
+
 def export_to_json(employee_id, todos, employee):
     final_dict = {}
     final_dict[employee_id] = []
@@ -59,6 +60,7 @@ def export_to_json(employee_id, todos, employee):
 
     print(f"Data exported to {file_name}")
 
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python script.py <employee_id>")
@@ -69,6 +71,6 @@ def main():
     if todos and employee:
         export_to_json(employee_id, todos, employee)
 
+
 if __name__ == "__main__":
     main()
-
