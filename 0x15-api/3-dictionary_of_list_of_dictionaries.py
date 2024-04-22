@@ -4,8 +4,8 @@
 This script exports json infos .
 """
 
-import json
 from requests import get
+import json
 
 
 if __name__ == "__main__":
