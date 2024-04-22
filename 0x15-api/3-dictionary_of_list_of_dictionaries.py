@@ -4,9 +4,9 @@
 This script exports json infos .
 """
 
-
-from requests import get
 import json
+from requests import get
+
 
 if __name__ == "__main__":
     todos_response = get('https://jsonplaceholder.typicode.com/todos/')
@@ -33,4 +33,3 @@ if __name__ == "__main__":
     with open("todo_all_employees.json", "w") as file:
         json_data = json.dumps(employee_tasks)
         file.write(json_data)
-
