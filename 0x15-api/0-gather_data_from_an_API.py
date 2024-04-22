@@ -7,29 +7,23 @@ using a REST API.
 import requests
 import sys
 
-import requests
-import sys
 
 def get_employee_todo_progress(employee_id):
-    # Define the API endpoints
     todos_url = "https://jsonplaceholder.typicode.com/todos/"
     users_url = "https://jsonplaceholder.typicode.com/users"
 
-    # Fetch todos
     response = requests.get(todos_url)
     if response.status_code != 200:
         print("Error fetching todos:", response.status_code)
         return
     todos = response.json()
 
-    # Fetch users
     response = requests.get(users_url)
     if response.status_code != 200:
         print("Error fetching users:", response.status_code)
         return
     users = response.json()
 
-    # Find the employee by ID
     employee = None
     for user in users:
         if user.get('id') == employee_id:
@@ -40,7 +34,6 @@ def get_employee_todo_progress(employee_id):
         print("Employee not found.")
         return
 
-    # Calculate completed and total tasks
     completed = 0
     total = 0
     tasks = []
@@ -51,10 +44,10 @@ def get_employee_todo_progress(employee_id):
                 completed += 1
                 tasks.append(todo.get('title'))
 
-    # Display the employee's TODO list progress
     print(f"Employee {employee} is done with tasks({completed}/{total}):")
     for task in tasks:
         print(f"\t {task}")
+
 
 def main():
     if len(sys.argv) != 2:
@@ -64,6 +57,6 @@ def main():
     employee_id = int(sys.argv[1])
     get_employee_todo_progress(employee_id)
 
+
 if __name__ == "__main__":
     main()
-
