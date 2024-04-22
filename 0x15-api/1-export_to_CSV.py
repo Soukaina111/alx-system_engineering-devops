@@ -7,6 +7,7 @@ import csv
 import requests
 import sys
 
+
 def fetch_employee_data(employee_id):
     todos_url = "https://jsonplaceholder.typicode.com/todos/"
     users_url = "https://jsonplaceholder.typicode.com/users"
@@ -35,17 +36,26 @@ def fetch_employee_data(employee_id):
 
     return todos, employee
 
+
 def export_to_csv(employee_id, todos, employee):
     file_name = f"{employee_id}.csv"
 
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        writer.writerow([
+            "USER_ID", "USERNAME",
+            "TASK_COMPLETED_STATUS",
+            "TASK_TITLE"])
         for todo in todos:
             if todo['userId'] == employee_id:
-                writer.writerow([todo['userId'], employee, todo['completed'], todo['title']])
+                writer.writerow([
+                    todo['userId'],
+                    employee,
+                    todo['completed'],
+                    todo['title']])
 
     print(f"Tasks exported to {file_name}")
+
 
 def main():
     if len(sys.argv) != 2:
@@ -57,6 +67,6 @@ def main():
     if todos and employee:
         export_to_csv(employee_id, todos, employee)
 
+
 if __name__ == "__main__":
     main()
-
