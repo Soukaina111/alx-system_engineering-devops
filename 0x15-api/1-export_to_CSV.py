@@ -29,11 +29,21 @@ def export_to_csv(userId, user_name, todos):
 
     with open(filename, mode='w', newline='') as f:
         writer = csv.writer(f, delimiter=',', quotechar='"',
-                            quoting=csv.QUOTE_ALL, lineterminator='\n')
-        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+                            quoting=csv.QUOTE_ALL,
+                            lineterminator='\n')
+        writer.writerow([
+                    "USER_ID",
+                    "USERNAME",
+                    "TASK_COMPLETED_STATUS",
+                    "TASK_TITLE"])
         for task in todos:
             if task.get('userId') == int(userId):
-                writer.writerow([userId, user_name, str(task.get('completed')), task.get('title')])
+                writer.writerow([
+                                userId,
+                                user_name,
+                                str(task.get('completed')),
+                                task.get('title')
+                                ])
 
 
 def main():
@@ -54,4 +64,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
