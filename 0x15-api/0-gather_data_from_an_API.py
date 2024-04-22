@@ -4,37 +4,66 @@
 This is a python script that lists data of employees
 using a REST API.
 """
+import requests
+import sys
 
 import requests
+import sys
 
 def get_employee_todo_progress(employee_id):
-    
-    url = f"YOUR_API_ENDPOINT/employees/{employee_id}/todo"
-    headers = {
-        "Authorization": "Bearer YOUR_API_KEY",
-        "Content-Type": "application/json"
-    }
+    # Define the API endpoints
+    todos_url = "https://jsonplaceholder.typicode.com/todos/"
+    users_url = "https://jsonplaceholder.typicode.com/users"
 
-    response = requests.get(url, headers=headers)
+    # Fetch todos
+    response = requests.get(todos_url)
+    if response.status_code != 200:
+        print("Error fetching todos:", response.status_code)
+        return
+    todos = response.json()
 
-    if response.status_code == 200:
-        data = response.json()
-        employee_name = data['employee_name']
-        done_tasks = data['done_tasks']
-        total_tasks = data['total_tasks']
+    # Fetch users
+    response = requests.get(users_url)
+    if response.status_code != 200:
+        print("Error fetching users:", response.status_code)
+        return
+    users = response.json()
 
-        print(f"Employee {employee_name} is done with tasks({done_tasks}/{total_tasks}):")
-        for task in done_tasks:
-            print(f"\t {task['title']}")
-    else:
-        print(f"Error fetching data: {response.status_code}")
+    # Find the employee by ID
+    employee = None
+    for user in users:
+        if user.get('id') == employee_id:
+            employee = user.get('name')
+            break
 
-if __name__ == "__main__":
-    import sys
+    if not employee:
+        print("Employee not found.")
+        return
+
+    # Calculate completed and total tasks
+    completed = 0
+    total = 0
+    tasks = []
+    for todo in todos:
+        if todo.get('userId') == employee_id:
+            total += 1
+            if todo.get('completed'):
+                completed += 1
+                tasks.append(todo.get('title'))
+
+    # Display the employee's TODO list progress
+    print(f"Employee {employee} is done with tasks({completed}/{total}):")
+    for task in tasks:
+        print(f"\t {task}")
+
+def main():
     if len(sys.argv) != 2:
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
 
     employee_id = int(sys.argv[1])
     get_employee_todo_progress(employee_id)
+
+if __name__ == "__main__":
+    main()
 
