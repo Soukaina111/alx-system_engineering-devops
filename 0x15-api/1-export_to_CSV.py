@@ -1,71 +1,51 @@
 #!/usr/bin/python3
 
 """
-Python script that exports data in the CSV format
+This  script exports data in  CSV format(comma separated values)
 """
-
 import csv
 import requests
 import sys
 
-
-def get_employee_todo_progress(employee_id):
+def fetch_employee_data(employee_id):
     todos_url = "https://jsonplaceholder.typicode.com/todos/"
     users_url = "https://jsonplaceholder.typicode.com/users"
 
     response = requests.get(todos_url)
     if response.status_code != 200:
         print("Error fetching todos:", response.status_code)
-        return
+        return None, None
     todos = response.json()
 
     response = requests.get(users_url)
     if response.status_code != 200:
         print("Error fetching users:", response.status_code)
-        return
+        return None, None
     users = response.json()
 
     employee = None
     for user in users:
-        if user.get('id') == employee_id:
-            employee = user.get('name')
+        if user['id'] == employee_id:
+            employee = user['username']
             break
 
     if not employee:
         print("Employee not found.")
-        return
+        return None, None
 
-    completed = 0
-    total = 0
-    tasks = []
-    for todo in todos:
-        if todo.get('userId') == employee_id:
-            total += 1
-            if todo.get('completed'):
-                completed += 1
-                tasks.append((employee_id, employee, True, todo.get('title')))
-            else:
-                tasks.append((employee_id, employee, False, todo.get('title')))
+    return todos, employee
 
-    print(f"Employee {employee} is done with tasks({completed}/{total}):")
-    for task in tasks:
-        print(f"\t {task[3]}")
-
-    export_to_csv(employee_id, tasks)
-
-
-def export_to_csv(employee_id, tasks):
+def export_to_csv(employee_id, todos, employee):
     file_name = f"{employee_id}.csv"
 
-    with open(file_name, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["USER_ID",
-                        "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-        for task in tasks:
-            writer.writerow(task)
+    with open(file_name, 'w', newline='') as file:
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        for todo in todos:
+            if todo['userId'] == employee_id:
+                writer.writerow([todo['userId'], employee, todo['completed'], todo['title']])
 
     print(f"Tasks exported to {file_name}")
-
 
 def main():
     if len(sys.argv) != 2:
@@ -73,8 +53,10 @@ def main():
         sys.exit(1)
 
     employee_id = int(sys.argv[1])
-    get_employee_todo_progress(employee_id)
-
+    todos, employee = fetch_employee_data(employee_id)
+    if todos and employee:
+        export_to_csv(employee_id, todos, employee)
 
 if __name__ == "__main__":
     main()
+
