@@ -8,65 +8,50 @@ import requests
 import sys
 
 
-def fetch_employee_data(employee_id):
-    todos_url = "https://jsonplaceholder.typicode.com/todos/"
-    users_url = "https://jsonplaceholder.typicode.com/users"
+def fetch_user_and_todos(userId):
+    """Fetch user and todos data from the JSONPlaceholder API."""
+    user_url = f"https://jsonplaceholder.typicode.com/users/{userId}"
+    todos_url = "https://jsonplaceholder.typicode.com/todos"
 
-    response = requests.get(todos_url)
-    if response.status_code != 200:
-        print("Error fetching todos:", response.status_code)
-        return None, None
-    todos = response.json()
+    user_response = requests.get(user_url)
+    todos_response = requests.get(todos_url)
 
-    response = requests.get(users_url)
-    if response.status_code != 200:
-        print("Error fetching users:", response.status_code)
-        return None, None
-    users = response.json()
-
-    employee = None
-    for user in users:
-        if user['id'] == employee_id:
-            employee = user['username']
-            break
-
-    if not employee:
-        print("Employee not found.")
+    if user_response.status_code != 200 or todos_response.status_code != 200:
+        print("Error fetching data from API.")
         return None, None
 
-    return todos, employee
+    return user_response.json(), todos_response.json()
 
 
-def export_to_csv(employee_id, todos, employee):
-    file_name = f"{employee_id}.csv"
+def export_to_csv(userId, user_name, todos):
+    """Export user's todos to a CSV file."""
+    filename = f"{userId}.csv"
 
-    with open(file_name, 'w', newline='') as file:
-        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-        writer.writerow([
-            "USER_ID", "USERNAME",
-            "TASK_COMPLETED_STATUS",
-            "TASK_TITLE"])
-        for todo in todos:
-            if todo['userId'] == employee_id:
-                writer.writerow([
-                    todo['userId'],
-                    employee,
-                    todo['completed'],
-                    todo['title']])
-
-    print(f"Tasks exported to {file_name}")
+    with open(filename, mode='w', newline='') as f:
+        writer = csv.writer(f, delimiter=',', quotechar='"',
+                            quoting=csv.QUOTE_ALL, lineterminator='\n')
+        writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        for task in todos:
+            if task.get('userId') == int(userId):
+                writer.writerow([userId, user_name, str(task.get('completed')), task.get('title')])
 
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python script.py <employee_id>")
+        print("Usage: python script.py <userId>")
         sys.exit(1)
 
-    employee_id = int(sys.argv[1])
-    todos, employee = fetch_employee_data(employee_id)
-    if todos and employee:
-        export_to_csv(employee_id, todos, employee)
+    userId = sys.argv[1]
+    user_data, todos_data = fetch_user_and_todos(userId)
+
+    if user_data and todos_data:
+        user_name = user_data.get('username')
+        export_to_csv(userId, user_name, todos_data)
+        print(f"Data exported to {userId}.csv")
+    else:
+        print("Failed to fetch data from API.")
 
 
 if __name__ == "__main__":
     main()
+
