@@ -17,11 +17,9 @@ def number_of_subscribers(subreddit):
     endpoint = "info.json"
     # Construct the full URL
     url = base_url + subreddit + endpoint
-    headers = {
-                "User-Agent": "YourAppName/0.0.1"
-            }
+    headers = {"User-Agent": "ALXSE/0.0.0"}
     response = requests.get(url, headers=headers)
-    if response.status_code == 200:
+    if (response.status_code == 200):
         data = response.json()
         subscribers = data.get('data', {}).get('subscribers', 0)
         return subscribers
