@@ -11,9 +11,9 @@ def top_ten(subreddit):
     Fetches and displays the titles of the top 10 hot posts from a
     specified subreddit using the Reddit API
     """
-    base_url = "https://www.reddit.com/r/"
+    httpp = "https://www.reddit.com/r/"
     endpoint = "hot.json"
-    url = base_url + subreddit + endpoint
+    url = httpp + subreddit + endpoint
     headers = {'User-Agent': "ALXSE/0.0.1"}
     response = requests.get(url, headers=headers)
     try:
