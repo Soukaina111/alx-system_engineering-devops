@@ -14,7 +14,7 @@ def number_of_subscribers(subreddit):
     # Define the base URL for the Reddit API
     base_url = "https://www.reddit.com/r/"
     # Define the endpoint for subreddit information
-    endpoint = "info.json"
+    endpoint = "about.json"
     # Construct the full URL
     url = base_url + subreddit + endpoint
     headers = {"User-Agent": "ALXSE/0.0.0"}
