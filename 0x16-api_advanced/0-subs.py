@@ -11,12 +11,11 @@ def number_of_subscribers(subreddit):
     Fetches and displays the titles of the top 10 hot posts from a
     specified subreddit using the Reddit API
     """
-    # base_url = "https://www.reddit.com/r/"
+    base_url = "https://www.reddit.com/r/"
     # Define the endpoint for subreddit information
-    # endpoint = "about.json"
+    endpoint = "info.json"
     # Construct the full URL
-    # url = base_url + subreddit + endpoint
-    url = 'http://www.reddit.com/r/{}/about.json'.format(subreddit)
+    url = base_url + subreddit + endpoint
     headers = {'User-Agent': 'ALXESE/0.0.0'}
     response = requests.get(url, headers=headers)
     if (not response.ok):
