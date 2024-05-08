@@ -16,9 +16,13 @@ def top_ten(subreddit):
     url = httpp + subreddit + endpoint
     headers = {'User-Agent': "ALXSE/0.0.1"}
     response = requests.get(url, headers=headers)
-    try:
-        tt = response.json()['data']['children']
-        for post in tt:
-            print(post['data']['title'])
-    except KeyError:
-        print("None")
+    # Check if the request was successful
+    if response.status_code == 200:
+        try:
+            tt = response.json()['data']['children']
+            for post in tt:
+                print(post['data']['title'])
+        except KeyError:
+            print("None")
+    else:
+        print(f"Error: Received status code {response.status_code}")
