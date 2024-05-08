@@ -5,7 +5,6 @@ specified subreddit using the Reddit API
 """
 import requests
 
-
 def number_of_subscribers(subreddit):
     """
     Fetches and displays the titles of the top 10 hot posts from a
@@ -17,8 +16,20 @@ def number_of_subscribers(subreddit):
     # Construct the full URL
     url = base_url + subreddit + endpoint
     headers = {'User-Agent': 'ALXESE/0.0.0'}
-    response = requests.get(url, headers=headers)
-    if (not response.ok):
-        return 0
-    subscribers1 = response.json().get('data').get('subscribers')
-    return subscribers1
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status() # Raises a HTTPError if the response was unsuccessful
+    except requests.exceptions.HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")
+        return None
+    except Exception as err:
+        print(f"An error occurred: {err}")
+        return None
+    else:
+        subscribers = response.json().get('data').get('subscribers')
+        if subscribers is None:
+            print("Subreddit does not exist or is private.")
+            return None
+        return subscribers
+
