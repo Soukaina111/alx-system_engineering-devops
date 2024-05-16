@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#This one is a config file to start the app 
 server {
     # Set up the port 80
     listen 80 default_server;
