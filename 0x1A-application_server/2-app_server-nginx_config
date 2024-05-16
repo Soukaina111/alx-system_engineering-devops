@@ -1,4 +1,6 @@
+#!/usr/bin/env bash
 server {
+    # Set up the port 80
     listen 80 default_server;
     server_name 127.0.0.1 52.87.254.240;
     listen [::]:80 default_server;
@@ -6,6 +8,7 @@ server {
     root   /var/www/html;
     index index.html index.htm;
 
+    # define the location using proxy
     location /airbnb-onepage/ {
         include proxy_params;
         proxy_pass http://127.0.0.1:5000/airbnb-onepage/;
